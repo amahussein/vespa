@@ -257,10 +257,12 @@ BTreeBucketDatabase::find_parents_internal(const BTree::FrozenView& frozen_view,
                                            std::vector<Entry>& entries) const
 {
     const uint64_t bucket_key = bucket.toKey();
-    auto iter = frozen_view.begin();
-    if (!iter.valid()) {
-        return iter;
+    if (!frozen_view.valid()) {
+        return frozen_view.begin();
     }
+    const auto first_key = BucketId(frozen_view.getAggregated().getMin(), bucket.getRawId()).toKey();
+    auto iter = frozen_view.lowerBound(first_key);
+
     assert(iter.getAggregated().getMin() >= static_cast<int32_t>(BucketId::minNumBits));
     assert(iter.getAggregated().getMax() <= static_cast<int32_t>(BucketId::maxNumBits));
     // Start at the lowest possible tree level no parents can exist above,
@@ -276,7 +278,7 @@ BTreeBucketDatabase::find_parents_internal(const BTree::FrozenView& frozen_view,
         bits = next_parent_bit_seek_level(bits, candidate, bucket);
         const auto parent_key = BucketId(bits, bucket.getRawId()).toKey();
         assert(parent_key > iter.getKey());
-        iter.seek(parent_key);
+        iter.linearSeek(parent_key);
     }
     return iter;
 }

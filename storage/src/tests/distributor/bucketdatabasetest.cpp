@@ -707,7 +707,7 @@ TEST_P(BucketDatabaseTest, DISABLED_benchmark_const_iteration) {
             db().toString(false).c_str(), elapsed);
 }
 
-TEST_P(BucketDatabaseTest, DISABLED_benchmark_find_parents) {
+TEST_P(BucketDatabaseTest, benchmark_find_parents) {
     constexpr uint32_t superbuckets = 1u << 16u;
     constexpr uint32_t sub_buckets = 14;
     constexpr uint32_t n_buckets = superbuckets * sub_buckets;
