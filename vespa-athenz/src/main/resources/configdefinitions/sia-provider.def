@@ -3,4 +3,5 @@ namespace=vespa.athenz.identity
 
 athenzIdentity string
 siaDirectory string
+athenzTruststorePath string
 clientTruststorePath string

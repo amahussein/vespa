@@ -97,7 +97,7 @@ public final class AthenzIdentityProviderImpl extends AbstractComponent implemen
              metric,
                 CLIENT_TRUST_STORE,
              new AthenzCredentialsService(config,
-                                          createNodeIdentityProvider(config, CLIENT_TRUST_STORE),
+                                          createNodeIdentityProvider(config),
                                           Defaults.getDefaults().vespaHostname(),
                                           Clock.systemUTC()),
              new ScheduledThreadPoolExecutor(1),
@@ -302,9 +302,9 @@ public final class AthenzIdentityProviderImpl extends AbstractComponent implemen
         }
     }
 
-    private static SiaIdentityProvider createNodeIdentityProvider(IdentityConfig config, Path trustStore) {
+    private static SiaIdentityProvider createNodeIdentityProvider(IdentityConfig config) {
         return new SiaIdentityProvider(
-                new AthenzService(config.nodeIdentityName()), SiaUtils.DEFAULT_SIA_DIRECTORY, trustStore);
+                new AthenzService(config.nodeIdentityName()), SiaUtils.DEFAULT_SIA_DIRECTORY, CLIENT_TRUST_STORE, ATHENZ_TRUST_STORE);
     }
 
     private boolean isExpired(AthenzCredentials credentials) {

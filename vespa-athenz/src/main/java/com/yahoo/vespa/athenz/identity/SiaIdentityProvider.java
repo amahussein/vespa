@@ -34,17 +34,19 @@ public class SiaIdentityProvider extends AbstractComponent implements ServiceIde
     public SiaIdentityProvider(SiaProviderConfig config) {
         this(new AthenzService(config.athenzIdentity()),
                 Paths.get(config.siaDirectory()),
+                Paths.get(config.athenzTruststorePath()),
                 Paths.get(config.clientTruststorePath()));
     }
 
     public SiaIdentityProvider(AthenzIdentity service,
                                Path siaPath,
-                               Path clientTruststoreFile) {
+                               Path clientTruststoreFile,
+                               Path athenzTruststoreFile) {
         this(service,
-             SiaUtils.getPrivateKeyFile(siaPath, service),
-             SiaUtils.getCertificateFile(siaPath, service),
-             SiaUtils.getCaCertificatesFile(siaPath),
-             clientTruststoreFile);
+                SiaUtils.getPrivateKeyFile(siaPath, service),
+                SiaUtils.getCertificateFile(siaPath, service),
+                athenzTruststoreFile,
+                clientTruststoreFile);
     }
 
     public SiaIdentityProvider(AthenzIdentity service,
